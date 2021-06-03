@@ -2,18 +2,20 @@
   "name": "soundworks-electron-wrapper",
   "productName": "Soundworks Electron Wrapper",
   "description": "Wrapper for soundworks applications",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "author": "Benjamin Matuszewski",
   "homepage": "http://example.com",
   "main": "app/main.js",
   "build": {
     "appId": "fr.b-ma.soundworks-electron-wrapper",
-    "publish": [{
-      "provider": "github",
-      "owner": "b-ma",
-      "repo": "electron-updater-example"
-    }],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "b-ma",
+        "repo": "electron-updater-example"
+      }
+    ],
     "files": [
       "app/**/*",
       "node_modules/**/*",
