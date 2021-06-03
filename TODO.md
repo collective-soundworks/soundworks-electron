@@ -1,36 +1,42 @@
 # TODO
 
 
-- autoupdate 
+- auto-update stuff
     + https://www.electron.build/auto-update
     + https://github.com/iffy/electron-updater-example
-
     + https://medium.com/@johndyer24/creating-and-deploying-an-auto-updating-electron-app-for-mac-and-windows-using-electron-builder-6a3982c0cee6 
 
-    + apple sign stuff (needs XCode)
-    + github token
+    + **Requirements**
+        * apple sign stuff (needs XCode)
+        * github token
 
+    + @note: should release according to target app version, not according to the wrapper version
 
-    + [not needed] install gh cli [https://github.com/cli/cli](https://github.com/cli/cli)
-        * https://cli.github.com/manual/gh_release_create
-    + 
-    
-- configuration / orchestration script
+- configuration script
     + ask for target application path
     + install `electron-rebuild` in target application
     + update package json "from" / "to"
     + create config file w/ target app path, default client for electron
     + consume this file in `src/main.js` to launch the target app
 
-- find a clean way to remove from target app `server/index`:
-``` js  
+- find a clean way to orchestrate server from electron
+    + clean target app `server/index`:
+```js  
 // for electron
 process.send('ready');
 ```
-    + options:
-        * maybe hide that into soundworks itself
-        * keep in `soundworks-template` it doesn't hurt
-        * find a way to `await` the instanciation of the server (++ but how?)
+e.g.
+```js
+// parent.js
+child_process.fork('./child', { env : { FORK : 1 } });
+
+// child.js
+if (process.env.FORK) {
+  console.log('started from fork()');
+}
+```
+    
+    + idealy: need a way to send informations back and forth between electron and server
     
 - create a `npm run rebuild` that runs `./node_modules/.bin/electron-rebuild` in target application
     + call it in npm `npm run release`
@@ -40,8 +46,6 @@ process.send('ready');
 [target] npm install electron rebuild
 [target] `./node_modules/.bin/electron-rebuild -v [electron version]` 
 [electron] npm run release
-[electron] sign app, etc.
-[electron] create a release
 [target] rm -Rf node_modules
 [target] npm install
 ```
@@ -49,9 +53,6 @@ process.send('ready');
 - clean application menus
     + e.g. cmd + w problem: https://github.com/electron/electron/issues/5536
     + etc.
-
-- explore if we can put the `electron-wrapper` inside the application itself
-    + cf. https://www.electron.build/configuration/contents `extraFiles.filter`
 
 - user defined app icon
     + https://www.npmjs.com/package/electron-icon-builder
@@ -85,5 +86,9 @@ process.send('ready');
 - portfinder
     + pass PORT to forked process
     + ok to do `process.env.PORT = 8080;` in `src/main.js`
+
+- explore if we can put the `electron-wrapper` inside the application itself
+    + cf. https://www.electron.build/configuration/contents `extraFiles.filter`
+    + @todo: define
 
 

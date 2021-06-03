@@ -1,17 +1,52 @@
 # soundworks-electron-wrapper
 
-Minimal wrapper to build Electron applications from existing `soundworks#3` applications. Derived from [https://github.com/szwacz/electron-boilerplate](https://github.com/szwacz/electron-boilerplate)
-Minimalistic, very easy to understand boilerplate for [Electron runtime](https://www.electronjs.org/). Tested on Windows, macOS and Linux.  
+Minimal wrapper to build Electron applications from existing `soundworks` applications. Derived from [https://github.com/szwacz/electron-boilerplate](https://github.com/szwacz/electron-boilerplate).
 
-This project contains only bare minimum of tooling and dependencies to provide you with simple to understand and extensible base (but still, this is fully functional Electron environment). The boilerplate doesn't impose on you any frontend technologies, so feel free to pick your favourite.
+__Work in Progress__
 
-## Quick start
+## Adding the wrapper to your project
 
-init-script
+```
+cd /path/to/your/soundworks/app
+git submodule add http://github.com/collective-soundworks/soundworks-electron-wrapper .electron
+cd .electron
+npm install
+npm run init
+```
 
-## Development
+In the soundworks application server code (`src/server/index.js`), make sure the following lines are present in the `launch` IIFE when the server and all experiences are started:
 
-Binaries
+```js
+(async function launch() {
+    // ...
+    server.start();
+    myExperience.start();
+    // ...
+    if (process.env.FORK) {
+      process.send('soundworks-ready');
+    }
+    // ...
+}());
+```
+
+
+
+## Launch application in development mode
+
+```
+cd .electron
+```
+
+## Features
+
+- auto-update w/ github releases
+- 
+
+## Quirks
+
+### Using Native Addons
+
+
 
 ## Making a release
 
