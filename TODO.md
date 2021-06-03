@@ -11,6 +11,12 @@
         * github token
 
     + @note: should release according to target app version, not according to the wrapper version
+        * this is possible using
+```
+"buildVersion": "1.2.3",
+"artifactName": "${productName}-${buildVersion}-${arch}.${ext}",
+```
+        * we can use a .js file that computes the config according to the target app
 
 - configuration script
     + ask for target application path

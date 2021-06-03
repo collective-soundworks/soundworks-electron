@@ -7,38 +7,10 @@
   "author": "Benjamin Matuszewski",
   "homepage": "http://example.com",
   "main": "app/main.js",
-  "build": {
-    "appId": "fr.b-ma.soundworks-electron-wrapper",
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "b-ma",
-        "repo": "electron-updater-example"
-      }
-    ],
-    "files": [
-      "app/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "directories": {
-      "buildResources": "resources"
-    },
-    "extraFiles": [
-      {
-        "from": "../soundworks-electron-test-app",
-        "to": "soundworks-app",
-        "filter": [
-          "**/*",
-          "!.electron"
-        ]
-      }
-    ]
-  },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "dev": "node build/start.js",
-    "build": "webpack --config=build/webpack.app.config.js --env=production && electron-builder",
+    "build": "webpack --config=build/webpack.app.config.js --env=production && electron-builder --config electron-builder.js",
     "publish": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -p always"
   },
   "dependencies": {
