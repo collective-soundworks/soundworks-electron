@@ -1,0 +1,10 @@
+{
+  // path to the soundworks application
+  soundworksPath: '',
+
+  //
+  soundworksDefaultClient: 'player',
+
+  // default background color (while loading)
+  backgroundColor: '#000000',
+}
