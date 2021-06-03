@@ -31,13 +31,13 @@
           "!.electron"
         ]
       }
-    ],
+    ]
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "dev": "node build/start.js",
-    "release": "webpack --config=build/webpack.app.config.js --env=production && electron-builder"
-    "publish": "build -p always"
+    "build": "webpack --config=build/webpack.app.config.js --env=production && electron-builder",
+    "publish": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -p always"
   },
   "dependencies": {
     "electron-log": "^4.3.5",

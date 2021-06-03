@@ -7,9 +7,13 @@
 
     + https://medium.com/@johndyer24/creating-and-deploying-an-auto-updating-electron-app-for-mac-and-windows-using-electron-builder-6a3982c0cee6 
 
-    + apple sign stuff
+    + apple sign stuff (needs XCode)
     + github token
-    + install gh cli [https://github.com/cli/cli](https://github.com/cli/cli)
+
+
+    + [not needed] install gh cli [https://github.com/cli/cli](https://github.com/cli/cli)
+        * https://cli.github.com/manual/gh_release_create
+    + 
     
 - configuration / orchestration script
     + ask for target application path
@@ -17,6 +21,16 @@
     + update package json "from" / "to"
     + create config file w/ target app path, default client for electron
     + consume this file in `src/main.js` to launch the target app
+
+- find a clean way to remove from target app `server/index`:
+``` js  
+// for electron
+process.send('ready');
+```
+    + options:
+        * maybe hide that into soundworks itself
+        * keep in `soundworks-template` it doesn't hurt
+        * find a way to `await` the instanciation of the server (++ but how?)
     
 - create a `npm run rebuild` that runs `./node_modules/.bin/electron-rebuild` in target application
     + call it in npm `npm run release`

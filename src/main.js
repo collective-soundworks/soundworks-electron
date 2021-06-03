@@ -56,29 +56,6 @@ const setApplicationMenu = () => {
   Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
-// log auto update stuff
-autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update...');
-});
-autoUpdater.on('update-available', (info) => {
-  log.info('Update available.');
-});
-autoUpdater.on('update-not-available', (info) => {
-  log.info('Update not available.');
-});
-autoUpdater.on('error', (err) => {
-  log.info('Error in auto-updater. ' + err);
-});
-autoUpdater.on('download-progress', (progressObj) => {
-  let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-  log.info(log_message);
-});
-autoUpdater.on('update-downloaded', (info) => {
-  log.info('Update downloaded');
-});
-
 app.on('ready', async () => {
   // this will immediately download an update, then install when the app quits.
   // cf. https://github.com/iffy/electron-updater-example
@@ -112,8 +89,42 @@ app.on('ready', async () => {
       });
 
       // @todo - get port from config
-      const swClientUrl = `http://localhost:${process.env.PORT}`;
+      const swClientUrl = `http://localhost:${process.env.PORT}?target=electron&version=${pkg.version}`;
       mainWindow.loadURL(swClientUrl);
+
+      // log auto update stuff
+      autoUpdater.on('checking-for-update', () => {
+        log.info('Checking for update...');
+        mainWindow.webContents.executeJavascript(`location.assign('checking-for-update');`);
+      });
+
+      autoUpdater.on('update-available', (info) => {
+        log.info('Update available.');
+        mainWindow.webContents.executeJavascript(`location.assign('update-available');`);
+      });
+
+      autoUpdater.on('update-not-available', (info) => {
+        log.info('Update not available.');
+        mainWindow.webContents.executeJavascript(`location.assign('update-not-available');`);
+      });
+
+      autoUpdater.on('error', (err) => {
+        log.info('Error in auto-updater. ' + err);
+        mainWindow.webContents.executeJavascript(`location.assign('error');`);
+      });
+
+      autoUpdater.on('download-progress', (progressObj) => {
+        let msg = "Download speed: " + progressObj.bytesPerSecond;
+        msg = msg + ' - Downloaded ' + progressObj.percent + '%';
+        msg = msg + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+        log.info(msg);
+        mainWindow.webContents.executeJavascript(`location.assign(${msg});`);
+      });
+
+      autoUpdater.on('update-downloaded', (info) => {
+        log.info('Update downloaded');
+        mainWindow.webContents.executeJavascript(`location.assign('update-downloaded');`);
+      });
 
       if (env.name === 'development') {
         mainWindow.openDevTools();
