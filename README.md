@@ -6,6 +6,8 @@ __Work in Progress__
 
 ## Adding the wrapper to your project
 
+*not completely implemented right now, to be discussed*
+
 ```
 cd /path/to/your/soundworks/app
 git submodule add http://github.com/collective-soundworks/soundworks-electron-wrapper .electron

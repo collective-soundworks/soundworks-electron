@@ -24,6 +24,8 @@ log.info('App starting...');
 // in config/env_xxx.json file.
 import env from 'env';
 
+import buildConfig from '../electron-builder.js';
+
 // disable security warnings, we only load content we know here
 // cf. https://www.electronjs.org/docs/tutorial/security
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 1;
@@ -39,12 +41,12 @@ if (env.name !== 'production') {
   const userDataPath = app.getPath('userData');
   app.setPath('userData', `${userDataPath} (${env.name})`);
   // prod see package.json extraFiles
-  soundworksAppPath = path.resolve(path.join(process.cwd(), pkg.build.extraFiles[0].from));
+  soundworksAppPath = path.resolve(path.join(process.cwd(), buildConfig.extraFiles[0].from));
 
   log.info('> target soundworks app path:', soundworksAppPath);
   log.info(process.versions);
 } else {
-  soundworksAppPath = path.resolve(path.join(process.resourcesPath, '..', pkg.build.extraFiles[0].to));
+  soundworksAppPath = path.resolve(path.join(process.resourcesPath, '..', buildConfig.extraFiles[0].to));
 }
 
 // application menu (cmd + w problem): https://github.com/electron/electron/issues/5536

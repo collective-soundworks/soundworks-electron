@@ -10,3 +10,5 @@ Thumbs.db
 /app/app.js
 /app/main.js
 /app/**/*.map
+
+NOTES.md

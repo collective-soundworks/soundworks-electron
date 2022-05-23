@@ -1,9 +1,10 @@
 
 module.exports = {
-  "productName": "Soundworks Electron Wrapper Test",
-  "buildVersion": "2.3.4",
+  "productName": "Soundworks Electron Test",
+  // "version": "0.0.3",
+  "buildVersion": "0.0.3",
   "artifactName": "${productName}-${buildVersion}-${arch}.${ext}",
-  "appId": "fr.b-ma.soundworks-electron-wrapper",
+  "appId": "fr.ircam.ismm.electron-test",
   "publish": [
     {
       "provider": "github",
@@ -28,5 +29,18 @@ module.exports = {
         "!.electron"
       ]
     }
-  ]
+  ],
+  "mac": {
+    "icon": "./resources/icon.icns",
+    "hardenedRuntime": true,
+    "entitlements": "./entitlements.mac.inherit.plist",
+    "target": ["dmg", "zip"]
+  },
+  "afterSign": './after-sign-hook.js',
+  afterPack: async function(context) {
+    // override version with buildVersion to match target app version for release
+    context.packager.appInfo.version = context.packager.appInfo.buildVersion
+    console.log('version:', context.packager.appInfo.version);
+    console.log('buildVersion:', context.packager.appInfo.buildVersion);
+  },
 }

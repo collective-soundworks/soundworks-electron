@@ -18,6 +18,17 @@
 ```
         * we can use a .js file that computes the config according to the target app
 
+    + test auto-update locally: https://github.com/electron-userland/electron-builder/issues/3053#issuecomment-401001573
+
+    + signing
+
+        * [**IMPORTANT**!] https://stackoverflow.com/questions/47688943/electron-builder-repeatedly-asks-for-macos-keychain-permissions
+
+    + notarisation appleid.apple.com
+
+        * https://kilianvalkhof.com/2019/electron/notarizing-your-electron-application/
+        * https://twitter-archive-eraser.medium.com/notarize-electron-apps-7a5f988406db (looks good)
+
 - configuration script
     + ask for target application path
     + install `electron-rebuild` in target application
