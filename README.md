@@ -1,64 +1,77 @@
-# soundworks-electron-wrapper
+# `@soundworks/electron`
 
-Minimal wrapper to build Electron applications from existing `soundworks` applications. Derived from [https://github.com/szwacz/electron-boilerplate](https://github.com/szwacz/electron-boilerplate).
+> Minimal wrapper to build Electron applications from existing `soundworks` applications. Derived from [https://github.com/szwacz/electron-boilerplate](https://github.com/szwacz/electron-boilerplate).
 
-__Work in Progress__
-
-## Adding the wrapper to your project
-
-*not completely implemented right now, to be discussed*
+## Install
 
 ```
-cd /path/to/your/soundworks/app
-git submodule add http://github.com/collective-soundworks/soundworks-electron-wrapper .electron
-cd .electron
-npm install
-npm run init
+npm install --save @soundworks/electron
 ```
 
-In the soundworks application server code (`src/server/index.js`), make sure the following lines are present in the `launch` IIFE when the server and all experiences are started:
+create an electron.js file with the following informations
 
-```js
-(async function launch() {
-    // ...
-    server.start();
-    myExperience.start();
-    // ...
-    if (process.env.FORK) {
-      process.send('soundworks-ready');
+```
+const pkg = require('./package.json');
+
+const config = {
+  productName: "CoMo Vox",
+  buildVersion: pkg.version,
+  appId: 'fr.ircam.ismm.como-vox',
+  // to be fixed
+  publish: [
+    {
+      provider: 'github',
+      owner: 'ircam-ismm',
+      reop: 'como-vox',
     }
+  ],
+  // list of files or directories that we don't want to include in the binary
+  // by default the whole application except the .git directory is copied
+  exclude: [
+    'resources',
     // ...
-}());
+  ]
+  // @todos
+  // icons, etc.
+}
+
+module.exports = config;
+```
+
+ make sure you have the following script in your package.json scripts, this command will be used to watch the project in dev mode
+
+
+```
+"watch-build": "soundworks-template-build -b -w",
 ```
 
 
 
-## Launch application in development mode
+## Commands
 
-```
-cd .electron
-```
+### `soundworks-electron init`
 
-## Features
+- create the
 
-- auto-update w/ github releases
-- 
+### `soundworks-electron dev`
 
-## Quirks
+- run electron in dev mode, the host soundworks application is watch and transpiled
+- be aware that if you modify server side files, you will have to relaunch
 
-### Using Native Addons
+### `soundworks-electron build`
 
+- build the application
 
+## code-signing
 
-## Making a release
+@todo - check electron-builder documenttation
 
-To package your app into an installer use command:
-```
-npm run release
-```
+## Todos
 
-Once the packaging process finished, the `dist` directory will contain your distributable file.
+- icons
+- build for windows (and linux ?)
+- automate releases
 
-[Electron-builder](https://github.com/electron-userland/electron-builder) is handling the packaging process. Follow dosc over there to customise your build.
+## License
 
-You can package your app cross-platform from a single operating system, [electron-builder kind of supports this](https://www.electron.build/multi-platform-build), but there are limitations and asterisks. That's why this boilerplate doesn't do that by default.
+BSD-3-Clause

@@ -5,7 +5,7 @@ const electronBuilderConfig = require('./electron-builder.js');
 const electronNotarize = require('electron-notarize');
 
 module.exports = async function (params) {
-    // Only notarize the app on Mac OS only.
+    // notarize app on Mac OS only.
     if (process.platform !== 'darwin' ||
         !process.env.appleId ||
         !process.env.appleIdPassword

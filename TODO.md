@@ -60,7 +60,7 @@ if (process.env.FORK) {
     + process could be something like:
 
 ```sh
-[target] npm install electron rebuild
+[target] npm install electron-rebuild
 [target] `./node_modules/.bin/electron-rebuild -v [electron version]` 
 [electron] npm run release
 [target] rm -Rf node_modules

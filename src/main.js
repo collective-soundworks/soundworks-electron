@@ -31,6 +31,7 @@ import buildConfig from '../electron-builder.js';
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 1;
 
 let port = 8000; // default port
+
 let soundworksAppPath = null;
 let soundworksApp = null;
 
@@ -41,7 +42,7 @@ if (env.name !== 'production') {
   const userDataPath = app.getPath('userData');
   app.setPath('userData', `${userDataPath} (${env.name})`);
   // prod see package.json extraFiles
-  soundworksAppPath = path.resolve(path.join(process.cwd(), buildConfig.extraFiles[0].from));
+  soundworksAppPath = path.resolve(buildConfig.extraFiles[0].from);
 
   log.info('> target soundworks app path:', soundworksAppPath);
   log.info(process.versions);
@@ -49,12 +50,16 @@ if (env.name !== 'production') {
   soundworksAppPath = path.resolve(path.join(process.resourcesPath, '..', buildConfig.extraFiles[0].to));
 }
 
+console.log('soundworksAppPath:', soundworksAppPath);
+
 // application menu (cmd + w problem): https://github.com/electron/electron/issues/5536
 const setApplicationMenu = () => {
   const menus = [appMenuTemplate, editMenuTemplate];
+
   if (env.name !== 'production') {
     menus.push(devMenuTemplate);
   }
+
   Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
@@ -69,28 +74,33 @@ app.on('ready', async () => {
     log.info(err);
   }
 
+  process.env.ENV = 'electron';
   process.env.PORT = port;
   // run soundworks server
   soundworksApp = fork('.build/server/index.js', {
     cwd: soundworksAppPath
   });
 
-  soundworksApp.on('message', msg => {
+  soundworksApp.on('message', data => {
+    const msg = JSON.parse(data);
     // the server is running
-    if (msg === 'ready') {
+    if (msg.type === 'soundworks:ready') {
       setApplicationMenu();
 
       const mainWindow = createWindow('main', {
-        width: 1000,
-        height: 600,
-        backgroundColor: '#000000',
+        show: false,
+        backgroundColor: '#black', // @todo - configurable
         webPreferences: {
           nodeIntegration: false,
           contextIsolation: true,
         }
       });
 
-      // @todo - get port from config
+      mainWindow.once('ready-to-show', () => {
+        mainWindow.maximize(); // full screen
+        mainWindow.show();
+      });
+
       const swClientUrl = `http://localhost:${process.env.PORT}?target=electron&version=${pkg.version}`;
       mainWindow.loadURL(swClientUrl);
 
