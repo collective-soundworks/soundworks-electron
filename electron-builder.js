@@ -1,5 +1,6 @@
 const path = require('path');
 
+// this script is somehow executed on post-install so we need to provide defaults
 const swAppPath = process.env.swAppPath;
 const electronConfig = JSON.parse(process.env.electronConfig);
 
@@ -36,10 +37,13 @@ const config = {
     }
   ],
   "mac": {
-    "icon": "./resources/icon.icns",
+    "icon": "./resources/icons/mac/icon.icns",
     "hardenedRuntime": true,
     "entitlements": "./entitlements.mac.inherit.plist",
-    "target": ["dmg"]
+    // this is somehow needed to prevent a weird issue with codesign
+    // https://github.com/electron/osx-sign/issues/161
+    "strictVerify": false,
+    "target": ["dmg", "zip"]
   },
   "afterSign": './after-sign-hook.js',
   "afterPack": async function(context) {
@@ -50,5 +54,5 @@ const config = {
   },
 }
 
-// console.log(config.extraFiles);
+// console.log(config);
 module.exports = config;

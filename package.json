@@ -6,10 +6,9 @@
   "author": "Benjamin Matuszewski",
   "main": "app/main.js",
   "bin": {
-    "soundworks-electron": "./bin/soundworks-electron.js"
+    "soundworks-electron": "./cli/soundworks-electron.js"
   },
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
     "dev": "node build/start.js",
     "build": "webpack --config=build/webpack.app.config.js --env=production && electron-builder --config electron-builder.js",
     "publish": "webpack --config=build/webpack.app.config.js --env=production && electron-builder -p always"
@@ -26,8 +25,9 @@
     "@babel/core": "^7.18.0",
     "@babel/preset-env": "^7.18.0",
     "babel-loader": "^8.2.5",
-    "electron": "^18.2.4",
+    "electron": "^19.0.3",
     "electron-builder": "^23.0.3",
+    "electron-icon-builder": "^2.0.1",
     "electron-notarize": "^1.2.1",
     "electron-rebuild": "^3.2.7",
     "source-map-support": "^0.5.21",

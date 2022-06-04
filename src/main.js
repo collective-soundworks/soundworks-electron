@@ -24,7 +24,7 @@ log.info('App starting...');
 // in config/env_xxx.json file.
 import env from 'env';
 
-import buildConfig from '../electron-builder.js';
+import appPaths from '../electron-builder-static.json';
 
 // disable security warnings, we only load content we know here
 // cf. https://www.electronjs.org/docs/tutorial/security
@@ -42,12 +42,12 @@ if (env.name !== 'production') {
   const userDataPath = app.getPath('userData');
   app.setPath('userData', `${userDataPath} (${env.name})`);
   // prod see package.json extraFiles
-  soundworksAppPath = path.resolve(buildConfig.extraFiles[0].from);
+  soundworksAppPath = path.resolve(appPaths.from);
 
   log.info('> target soundworks app path:', soundworksAppPath);
   log.info(process.versions);
 } else {
-  soundworksAppPath = path.resolve(path.join(process.resourcesPath, '..', buildConfig.extraFiles[0].to));
+  soundworksAppPath = path.resolve(path.join(process.resourcesPath, '..', appPaths.to));
 }
 
 console.log('soundworksAppPath:', soundworksAppPath);

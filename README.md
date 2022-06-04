@@ -5,18 +5,20 @@
 ## Install
 
 ```
-npm install --save @soundworks/electron
+npm install --save-dev @soundworks/electron
 ```
 
-create an electron.js file with the following informations
+create an `.electron.js` file at the root of your application with the following informations:
 
 ```
 const pkg = require('./package.json');
 
 const config = {
-  productName: "CoMo Vox",
+  // avoid spaces in product name, this crashes the build process
+  productName: "My-App",
+  // keep versionning synchronized
   buildVersion: pkg.version,
-  appId: 'fr.ircam.ismm.como-vox',
+  appId: 'fr.ircam.ismm.my-app',
   // to be fixed
   publish: [
     {
@@ -38,20 +40,32 @@ const config = {
 module.exports = config;
 ```
 
- make sure you have the following script in your package.json scripts, this command will be used to watch the project in dev mode
-
+Make sure you have the following script in your `package.json`, this command is used by `@soundworks/electron` to watch and build the soundworks project in dev mode.
 
 ```
 "watch-build": "soundworks-template-build -b -w",
 ```
 
+The wrapped application server should send an event to the electron process when ready,
+so that the GUI can be launched safely.
 
+```
+if (process.env.ENV === 'electron') {
+  process.send(JSON.stringify({
+    type: 'soundworks:ready',
+    payload: {},
+  }));
+}
+```
 
 ## Commands
 
-### `soundworks-electron init`
+### `soundworks-electron init` (@todo)
 
-- create the
+- generate the `.electron.js` file
+- add the npm script command in package.json if not exists
+- add a default icon
+- add `electron-build` directory to `.gitignore`
 
 ### `soundworks-electron dev`
 
