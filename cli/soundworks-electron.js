@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const path = require('path');
+const fs = require('fs');
 const { execSync, spawn } = require('child_process');
 
 const chalk = require('chalk');
@@ -15,6 +16,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 }
 
 (async function run() {
+
   if (cmd === 'init') {
     console.log(chalk.yellow('> `soundworks-electron init` not yet implemented, check the README'));
     return;
@@ -141,6 +143,40 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
   if (cmd === 'build') {
     // --------------------------------------------------------
+    let userIcon = false;
+
+    // if user define icon defined, create all formats
+    if (electronConfig.icon && fs.existsSync(path.join(swAppPath, electronConfig.icon))) {
+      // --------------------------------------------------------
+      console.log('');
+      console.log(chalk.cyan(`+ Create icons`));
+
+      async function createIcons() {
+        return new Promise((resolve, reject) => {
+            // run electron in dev mode
+          const runCreateIcons = spawn('electron-icon-builder', [
+            `--input=${path.join(swAppPath, electronConfig.icon)}`,
+            `--output=${path.join(swElectronPath, 'resources', 'user')}`
+          ], {
+            cwd: swElectronPath,
+          });
+
+          runCreateIcons.stdout.on('data', (data) => process.stdout.write(data.toString()));
+          runCreateIcons.stderr.on('data', (data) => process.stdout.write(data.toString()));
+          runCreateIcons.on('close', (code) => code === 0 ? resolve() : reject());
+        });
+      }
+
+      createIcons();
+      userIcon = true;
+    } else {
+      console.log('');
+      console.log(chalk.cyan(`+ No user icon defined, skip`));
+      // --------------------------------------------------------
+    }
+
+
+    // --------------------------------------------------------
     console.log('');
     console.log(chalk.cyan(`+ Launch electron build`));
 
@@ -150,8 +186,9 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
         const runElectronBuild = spawn('npm', ['run', 'build'], {
           cwd: swElectronPath,
           env: Object.assign(process.env, {
-            swAppPath,
             electronConfig: JSON.stringify(electronConfig),
+            swAppPath,
+            userIcon,
           }),
         });
 

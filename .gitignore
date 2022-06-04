@@ -12,3 +12,5 @@ Thumbs.db
 /app/**/*.map
 
 NOTES.md
+
+resources/user/
