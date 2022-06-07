@@ -93,7 +93,8 @@ app.on('ready', async () => {
         webPreferences: {
           nodeIntegration: false,
           contextIsolation: true,
-        }
+        },
+        // frame: false,
       });
 
       mainWindow.once('ready-to-show', () => {

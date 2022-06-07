@@ -1,19 +1,23 @@
 ## Todos
 
+### v1
+
+- build and deploy for all platforms (at least Mac and Windows)
+    + mac, windows, linux
+    + check if work if no node.js preinstalled on the machine (it should but...)
+
+### v2
+
+- upload file (v2)
 - define opening client
 - define opening screen size
 - `init` script
 - clean application menus
     + e.g. cmd + w problem: https://github.com/electron/electron/issues/5536
     + etc.
+- chrome / frame
+    + https://stackoverflow.com/questions/35876939/frameless-window-with-controls-in-electron-windows
 
-- user defined app icon
-    + https://www.npmjs.com/package/electron-icon-builder
-
-- upload file
-- build and deploy for all platforms (at least Mac and Windows)
-    + mac, windows, linux
-    + check if work if no node.js preinstalled on the machine (it should but...)
 
 ## Review
 

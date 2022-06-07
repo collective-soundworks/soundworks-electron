@@ -9,6 +9,7 @@ export default {
       label: 'About ' + name,
       role: 'about'
     },
+    { type: "separator" },
     {
       label: "Quit",
       accelerator: "CmdOrCtrl+Q",
