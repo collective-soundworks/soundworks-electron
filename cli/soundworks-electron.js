@@ -2,8 +2,8 @@
 const path = require('path');
 const fs = require('fs');
 const { execSync, spawn } = require('child_process');
-
 const chalk = require('chalk');
+const pkg = require('../package.json');
 
 const swAppPath = process.cwd();
 const swElectronPath = path.join(__dirname, '..');
@@ -27,9 +27,11 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
   // --------------------------------------------------------
   // GET CURRENT ELECTRON VERSION
-  const electronVersion = execSync(`npx electron -v`, {
-    cwd: swElectronPath,
-  }).toString().replace(/^v/, '');
+  const electronVersion = pkg.devDependencies.electron.replace(/^\^/, '');
+  // this doesn't work on windows...
+  // const electronVersion = execSync(`npx electron -v`, {
+  //   cwd: swElectronPath,
+  // }).toString().replace(/^v/, '');
   // --------------------------------------------------------
 
 
