@@ -27,7 +27,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
   // --------------------------------------------------------
   // GET CURRENT ELECTRON VERSION
-  const electronVersion = execSync(`electron -v`, {
+  const electronVersion = execSync(`npx electron -v`, {
     cwd: swElectronPath,
   }).toString().replace(/^v/, '');
   // --------------------------------------------------------
@@ -42,7 +42,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     return new Promise((resolve, reject) => {
       // https://github.com/electron/electron-rebuild#cli-arguments
       // `electron-rebuild -v ${electronVersion} -m ${swAppPath}`
-      const rebuild = spawn('electron-rebuild', [
+      const rebuild = spawn('npx', [
+        'electron-rebuild',
         '-v', electronVersion,
         '-m', swAppPath,
       ], {
@@ -55,7 +56,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  // await rebuildDeps();
+  await rebuildDeps();
   // --------------------------------------------------------
 
   // --------------------------------------------------------
@@ -75,7 +76,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  // await rebuildSoundworksApp();
+  await rebuildSoundworksApp();
   // --------------------------------------------------------
 
 
@@ -154,7 +155,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
       async function createIcons() {
         return new Promise((resolve, reject) => {
             // run electron in dev mode
-          const runCreateIcons = spawn('electron-icon-builder', [
+          const runCreateIcons = spawn('npx', [
+            'electron-icon-builder',
             `--input=${path.join(swAppPath, electronConfig.icon)}`,
             `--output=${path.join(swElectronPath, 'resources', 'user')}`
           ], {
