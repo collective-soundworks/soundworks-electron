@@ -44,7 +44,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     return new Promise((resolve, reject) => {
       // https://github.com/electron/electron-rebuild#cli-arguments
       // `electron-rebuild -v ${electronVersion} -m ${swAppPath}`
-      const rebuild = spawn('npx', [
+      const cmd = /^win/.test(process.platform) ? 'npx.cmd' : 'npx';
+      const rebuild = spawn(cmd, [
         'electron-rebuild',
         '-v', electronVersion,
         '-m', swAppPath,
@@ -68,7 +69,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
   async function rebuildSoundworksApp() {
     return new Promise((resolve, reject) => {
-      const rebuild = spawn('npm', ['run', 'build'], {
+      const cmd = /^win/.test(process.platform) ? 'npm.cmd' : 'npm';
+      const rebuild = spawn(cmd, ['run', 'build'], {
         cwd: swAppPath,
       });
 
@@ -117,7 +119,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     async function electronDev() {
 
       // watch and build soundworks app
-      const swBuildWatch = spawn('npm', ['run', 'watch-build'], {
+      const cmd = /^win/.test(process.platform) ? 'npm.cmd' : 'npm';
+      const swBuildWatch = spawn(cmd, ['run', 'watch-build'], {
         cwd: swAppPath,
       });
 
@@ -126,7 +129,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
       // swBuildWatch.on('close', (code) => code === 0 ? resolve() : reject());
 
       // run electron in dev mode
-      const runElectronDev = spawn('npm', ['run', 'dev'], {
+      const runElectronDev = spawn(cmd, ['run', 'dev'], {
         cwd: swElectronPath,
         env: Object.assign(process.env, {
           swAppPath,
@@ -156,8 +159,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
       async function createIcons() {
         return new Promise((resolve, reject) => {
-            // run electron in dev mode
-          const runCreateIcons = spawn('npx', [
+          const cmd = /^win/.test(process.platform) ? 'npx.cmd' : 'npx';
+          const runCreateIcons = spawn(cmd, [
             'electron-icon-builder',
             `--input=${path.join(swAppPath, electronConfig.icon)}`,
             `--output=${path.join(swElectronPath, 'resources', 'user')}`
@@ -186,8 +189,8 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
     async function electronBuild() {
       return new Promise((resolve, reject) => {
-          // run electron in dev mode
-        const runElectronBuild = spawn('npm', ['run', 'build'], {
+        const cmd = /^win/.test(process.platform) ? 'npm.cmd' : 'npm';
+        const runElectronBuild = spawn(cmd, ['run', 'build'], {
           cwd: swElectronPath,
           env: Object.assign(process.env, {
             electronConfig: JSON.stringify(electronConfig),
