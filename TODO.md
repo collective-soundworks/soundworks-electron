@@ -8,7 +8,7 @@
 
 ### v2
 
-- upload file (v2)
+- upload file
 - define opening client
 - define opening screen size
 - `init` script

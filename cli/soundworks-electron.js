@@ -59,7 +59,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  // await rebuildDeps();
+  await rebuildDeps();
   // --------------------------------------------------------
 
   // --------------------------------------------------------
@@ -80,7 +80,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  // await rebuildSoundworksApp();
+  await rebuildSoundworksApp();
   // --------------------------------------------------------
 
 
