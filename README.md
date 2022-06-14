@@ -4,13 +4,13 @@
 
 ## Install
 
-```
+```sh
 npm install --save-dev @soundworks/electron
 ```
 
 create an `.electron.js` file at the root of your application with the following informations:
 
-```
+```js
 const pkg = require('./package.json');
 
 const config = {
@@ -42,14 +42,14 @@ module.exports = config;
 
 Make sure you have the following script in your `package.json`, this command is used by `@soundworks/electron` to watch and build the soundworks project in dev mode.
 
-```
+```json
 "watch-build": "soundworks-template-build -b -w",
 ```
 
 The wrapped application server should send an event to the electron process when ready,
 so that the GUI can be launched safely.
 
-```
+```js
 if (process.env.ENV === 'electron') {
   process.send(JSON.stringify({
     type: 'soundworks:ready',
@@ -76,13 +76,43 @@ if (process.env.ENV === 'electron') {
 
 - build the application
 
-## code-signing
+## Release
 
-@todo - check electron-builder documenttation
+### Mac
+
+To build a release for Mac, you should have a valid Certificate installed on your machine
+
+Trouble shooting:
+
+- check codesign
+
+```
+codesign --verify --deep --verbose ./electron-build/mac/CoMo\ Vox.app/
+```
+
+- check notarization
+
+```
+spctl -a -t exec -vvv electron-build/mac/CoMo\ Vox.app/
+```
+
+output
+```
+# on the machine where the build has been done
+spctl -a -t exec -v /path/to/notarised.app
+source=Notarized Developer ID
+
+# on another machine (not sure of this one)
+spctl -a -t exec -v /path/to/not_notarised.app
+source=Developer ID
+```
+
+These checks should be done both on the dev machine and on another one after 
+download to check gatekeeper behavior.
+
 
 ## Todos
 
-- icons
 - build for windows (and linux ?)
 - automate releases
 

@@ -50,6 +50,9 @@
         * https://kilianvalkhof.com/2019/electron/notarizing-your-electron-application/
         * https://twitter-archive-eraser.medium.com/notarize-electron-apps-7a5f988406db (looks good)
 
+
+> https://twitter-archive-eraser.medium.com/notarize-electron-apps-7a5f988406db
+
 ## Done
 
 - clean all unused files & dependencies

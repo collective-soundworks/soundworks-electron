@@ -4,11 +4,13 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('./electron-builder.js');
+
+let productName = config.productName;
 let { from, to } = config.extraFiles[0];
 
 fs.writeFileSync(
   path.join(process.cwd(), 'electron-builder-static.json'),
-  JSON.stringify({ from, to }),
+  JSON.stringify({ productName, from, to }),
 );
 
 

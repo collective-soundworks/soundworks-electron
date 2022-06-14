@@ -8,8 +8,15 @@ module.exports = async function (params) {
     // notarize app on Mac OS only.
   if (process.platform !== 'darwin' ||
     !process.env.appleId ||
-    !process.env.appleIdPassword
+    !process.env.appleIdPassword ||
+    !process.env.teamId
   ) {
+    if (process.platform === 'darwin') {
+      console.log('[Error] Abort application notarization');
+      console.log('appleId:', process.env.appleId);
+      console.log('appleIdPassword:', process.env.appleIdPassword);
+      console.log('teamId:', process.env.teamId);
+    }
     return;
   }
 
@@ -19,6 +26,7 @@ module.exports = async function (params) {
   let appId = electronBuilderConfig.appId;
 
   let appPath = path.join(params.appOutDir, `${params.packager.appInfo.productFilename}.app`);
+
   if (!fs.existsSync(appPath)) {
     throw new Error(`Cannot find application at: ${appPath}`);
   }
@@ -27,13 +35,16 @@ module.exports = async function (params) {
 
   try {
     const config = {
+      tool: 'notarytool',
       appBundleId: appId,
       appPath: appPath,
       appleId: process.env.appleId,
       appleIdPassword: process.env.appleIdPassword,
+      teamId: process.env.teamId,
     };
 
-    console.log(config);
+    console.log('notarization config:', config);
+
     await electronNotarize.notarize(config);
   } catch (error) {
     console.error(error);

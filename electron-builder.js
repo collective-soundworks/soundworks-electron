@@ -4,12 +4,12 @@ const path = require('path');
 const swAppPath = process.env.swAppPath;
 const electronConfig = JSON.parse(process.env.electronConfig);
 const userIcon = process.env.userIcon === 'true' ? true : false;
-
-console.log(typeof userIcon);
+const { notarize } = require('electron-notarize-dmg');
 
 const config = {
   productName: electronConfig.productName,
   buildVersion: electronConfig.buildVersion,
+  // buildNumber: electronConfig.buildNumber,
   artifactName: "${productName}-${buildVersion}-${arch}.${ext}",
   appId: electronConfig.appId,
   //  "publish": [
@@ -35,25 +35,31 @@ const config = {
       filter: [
         '**/*',
         '!.git',
-        '!electron-build', // do not copy inside itself
+        // do not copy inside itself
+        '!electron-build',
+        // in dev, these can be symlinks that break codesign check
+        '!node_modules/.bin',
+        '!node_modules/@soundworks/electron',
       ].concat(electronConfig.exclude.map((entry) => `!${entry}`)),
     }
   ],
   mac: {
     icon: `./resources/${userIcon ? 'user/icons' : 'icons'}/mac/icon.icns`,
+    // cf. https://kilianvalkhof.com/2019/electron/notarizing-your-electron-application/
     hardenedRuntime: true,
+    gatekeeperAssess: false,
     entitlements: './entitlements.mac.inherit.plist',
+    entitlementsInherit: './entitlements.mac.inherit.plist',
     // this is somehow needed to prevent a weird issue with codesign
     // https://github.com/electron/osx-sign/issues/161
-    strictVerify: false,
-    target: ['dmg', 'zip']
+    // strictVerify: false,
+    target: ['dmg', 'zip'],
   },
   afterSign: './after-sign-hook.js',
   afterPack: async function(context) {
     // override version with buildVersion to match target app version for release
-    context.packager.appInfo.version = context.packager.appInfo.buildVersion
+    context.packager.appInfo.version = context.packager.appInfo.buildVersion;
   },
 }
 
-console.log(config);
 module.exports = config;

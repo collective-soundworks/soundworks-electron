@@ -38,7 +38,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
   // --------------------------------------------------------
   // REBUILD DEPS AGAINST ELECTRON
   console.log('');
-  console.log(chalk.cyan(`+ Rebuild dependancies for electron@${electronVersion}`));
+  console.log(chalk.cyan(`+ Rebuild dependencies for electron@${electronVersion}`));
 
   async function rebuildDeps() {
     return new Promise((resolve, reject) => {
@@ -59,7 +59,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  await rebuildDeps();
+  // await rebuildDeps();
   // --------------------------------------------------------
 
   // --------------------------------------------------------
@@ -80,7 +80,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  await rebuildSoundworksApp();
+  // await rebuildSoundworksApp();
   // --------------------------------------------------------
 
 
