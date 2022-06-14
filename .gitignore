@@ -15,3 +15,5 @@ NOTES.md
 
 resources/user/
 resources/*.xcf
+
+electron-builder-static.json

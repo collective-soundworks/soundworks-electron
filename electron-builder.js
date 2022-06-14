@@ -55,6 +55,14 @@ const config = {
     // strictVerify: false,
     target: ['dmg', 'zip'],
   },
+  win: {
+    target: 'nsis',
+    icon: `./resources/${userIcon ? 'user/icons' : 'icons'}/win/icon.ico`,
+  },
+  nsis: {
+    deleteAppDataOnUninstall: true,
+    // include: "installer/win/nsis-installer.nsh"
+  },
   afterSign: './after-sign-hook.js',
   afterPack: async function(context) {
     // override version with buildVersion to match target app version for release
@@ -62,4 +70,5 @@ const config = {
   },
 }
 
+console.log(config);
 module.exports = config;
