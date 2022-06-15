@@ -14,12 +14,12 @@ create an `.electron.js` file at the root of your application with the following
 const pkg = require('./package.json');
 
 const config = {
-  // avoid spaces in product name, this crashes the build process
-  productName: "My-App",
-  // keep versionning synchronized
+  productName: "My App",
+  // keep versionning synchronized with the current repo
   buildVersion: pkg.version,
   appId: 'fr.ircam.ismm.my-app',
-  // to be fixed
+  icon: './media/icon.png',
+  // to be fixed confirmed...
   publish: [
     {
       provider: 'github',
