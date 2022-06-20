@@ -18,9 +18,51 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 (async function run() {
 
   if (cmd === 'init') {
+    //
+    const defaultElectronFile = `\
+const pkg = require('./package.json');
+
+const config = {
+  productName: "My App",
+  // keep versionning synchronized with the current repo
+  buildVersion: pkg.version,
+  appId: 'fr.ircam.ismm.my-app',
+  icon: './media/icon.png',
+  // to be fixed confirmed...
+  publish: [
+    {
+      provider: 'github',
+      owner: 'ircam-ismm',
+      reop: 'como-vox',
+    }
+  ],
+  // list of files or directories that we don't want to include in the binary
+  // by default the whole application except the .git directory is copied
+  exclude: [
+    'resources',
+    // ...
+  ]
+  // @todos
+  // icons, etc.
+}
+
+module.exports = config;
+    `
     console.log(chalk.yellow('> `soundworks-electron init` not yet implemented, check the README'));
     return;
   }
+
+  // --------------------------------------------------------
+  // CHECK THAT ELECTRON FILE EXISTS IN TARGET APP
+  const electronFile = path.join(swAppPath, '.electron.js');
+
+  if (!fs.existsSync(electronFile)) {
+    console.log(chalk.yellow('> ".electron.js" file was not found.'));
+    console.log(chalk.yellow('> Please run `soundworks-electron init` first'));
+    return;
+  }
+
+  // --------------------------------------------------------
 
   console.log('');
   console.log(chalk.green(`> Building app in ${swAppPath}`));
@@ -28,18 +70,15 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
   // --------------------------------------------------------
   // GET CURRENT ELECTRON VERSION
   const electronVersion = pkg.devDependencies.electron.replace(/^\^/, '');
-  // this doesn't work on windows...
-  // const electronVersion = execSync(`npx electron -v`, {
-  //   cwd: swElectronPath,
-  // }).toString().replace(/^v/, '');
   // --------------------------------------------------------
-
 
   // --------------------------------------------------------
   // REBUILD DEPS AGAINST ELECTRON
   console.log('');
   console.log(chalk.cyan(`+ Rebuild dependencies for electron@${electronVersion}`));
 
+  // @note - maybe this could be replaced with: `electron-builder node-gyp-rebuild`
+  // see https://www.electron.build/cli.html
   async function rebuildDeps() {
     return new Promise((resolve, reject) => {
       // https://github.com/electron/electron-rebuild#cli-arguments
@@ -80,7 +119,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
     });
   }
 
-  // await rebuildSoundworksApp();
+  await rebuildSoundworksApp();
   // --------------------------------------------------------
 
 

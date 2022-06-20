@@ -10,9 +10,9 @@ const config = {
   productName: electronConfig.productName,
   buildVersion: electronConfig.buildVersion,
   // buildNumber: electronConfig.buildNumber,
-  artifactName: "${productName}-${buildVersion}-${arch}.${ext}",
+  artifactName: "${productName}-${buildVersion}-${os}-${arch}.${ext}",
   appId: electronConfig.appId,
-  //  "publish": [
+  // "publish": [
   //   {
   //     "provider": "github",
   //     "owner": "b-ma",

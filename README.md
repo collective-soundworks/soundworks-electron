@@ -110,6 +110,12 @@ source=Developer ID
 These checks should be done both on the dev machine and on another one after 
 download to check gatekeeper behavior.
 
+## Auto-update
+
+auto update seems to be automatically done from .git/config infos
+https://github.com/iffy/electron-updater-example
+
+to be tested
 
 ## Todos
 
