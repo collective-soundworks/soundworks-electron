@@ -29,13 +29,11 @@ const config = {
   appId: 'fr.ircam.ismm.my-app',
   icon: './media/icon.png',
   // to be fixed confirmed...
-  publish: [
-    {
-      provider: 'github',
-      owner: 'ircam-ismm',
-      reop: 'como-vox',
-    }
-  ],
+  publish: {
+    provider: 'github',
+    owner: 'ircam-ismm',
+    repo: 'como-vox',
+  },
   // list of files or directories that we don't want to include in the binary
   // by default the whole application except the .git directory is copied
   exclude: [

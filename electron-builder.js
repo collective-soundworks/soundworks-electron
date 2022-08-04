@@ -10,15 +10,11 @@ const config = {
   productName: electronConfig.productName,
   buildVersion: electronConfig.buildVersion,
   // buildNumber: electronConfig.buildNumber,
-  artifactName: "${productName}-${buildVersion}-${os}-${arch}.${ext}",
+  // artifactName: "${productName}-${buildVersion}-${os}-${arch}.${ext}",
+  // we must remove buildVersion if we want a constant link to last version on github
+  artifactName: "${productName}-${os}-${arch}.${ext}",
   appId: electronConfig.appId,
-  // "publish": [
-  //   {
-  //     "provider": "github",
-  //     "owner": "b-ma",
-  //     "repo": "electron-updater-example"
-  //   }
-  // ],
+  publish: electronConfig.publish,
   files: [
     'app/**/*',
     'node_modules/**/*',
