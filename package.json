@@ -2,7 +2,7 @@
   "name": "@soundworks/electron",
   "description": "Electron wrapper for soundworks applications",
   "version": "0.0.2",
-  "private": true,
+  "private": false,
   "author": "Benjamin Matuszewski",
   "main": "app/main.js",
   "bin": {
