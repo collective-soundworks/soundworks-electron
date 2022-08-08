@@ -6,15 +6,23 @@ const electronConfig = JSON.parse(process.env.electronConfig);
 const userIcon = process.env.userIcon === 'true' ? true : false;
 const { notarize } = require('electron-notarize-dmg');
 
+console.log(electronConfig);
+
 const config = {
+  // override data in @soundworks/electron package.json file
+  extraMetadata: {
+    version: electronConfig.buildVersion,
+    name: electronConfig.name,
+  },
   productName: electronConfig.productName,
   buildVersion: electronConfig.buildVersion,
-  // buildNumber: electronConfig.buildNumber,
-  // artifactName: "${productName}-${buildVersion}-${os}-${arch}.${ext}",
-  // we must remove buildVersion if we want a constant link to last version on github
-  artifactName: "${productName}-${os}-${arch}.${ext}",
+  // @notes
+  // - we must remove buildVersion if we want a constant link to last version on github
+  // - we must use ${name} instead of ${artifactName} because github replaces ' ' w/ '.'
+  // while electron updater replace ' ' w/ '-', at least name is safe
+  artifactName: "${name}-${os}-${arch}.${ext}",
   appId: electronConfig.appId,
-  // publish: electronConfig.publish,
+  publish: electronConfig.publish,
   files: [
     'app/**/*',
     'node_modules/**/*',

@@ -109,22 +109,22 @@ app.on('ready', async () => {
       // log auto update stuff
       autoUpdater.on('checking-for-update', () => {
         log.info('Checking for update...');
-        mainWindow.webContents.executeJavascript(`location.assign('checking-for-update');`);
+        // @todo - send event to soundworks app for user notification and logging
       });
 
       autoUpdater.on('update-available', (info) => {
         log.info('Update available.');
-        mainWindow.webContents.executeJavascript(`location.assign('update-available');`);
+        // @todo - send event to soundworks app for user notification and logging
       });
 
       autoUpdater.on('update-not-available', (info) => {
         log.info('Update not available.');
-        mainWindow.webContents.executeJavascript(`location.assign('update-not-available');`);
+        // @todo - send event to soundworks app for user notification and logging
       });
 
       autoUpdater.on('error', (err) => {
         log.info('Error in auto-updater. ' + err);
-        mainWindow.webContents.executeJavascript(`location.assign('error');`);
+        // @todo - send event to soundworks app for user notification and logging
       });
 
       autoUpdater.on('download-progress', (progressObj) => {
@@ -132,12 +132,12 @@ app.on('ready', async () => {
         msg = msg + ' - Downloaded ' + progressObj.percent + '%';
         msg = msg + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
         log.info(msg);
-        mainWindow.webContents.executeJavascript(`location.assign(${msg});`);
+        // @todo - send event to soundworks app for user notification and logging
       });
 
       autoUpdater.on('update-downloaded', (info) => {
         log.info('Update downloaded');
-        mainWindow.webContents.executeJavascript(`location.assign('update-downloaded');`);
+        // @todo - send event to soundworks app for user notification and logging
       });
 
       if (env.name === 'development') {
