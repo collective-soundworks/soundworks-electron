@@ -14,7 +14,7 @@ const config = {
   // we must remove buildVersion if we want a constant link to last version on github
   artifactName: "${productName}-${os}-${arch}.${ext}",
   appId: electronConfig.appId,
-  publish: electronConfig.publish,
+  // publish: electronConfig.publish,
   files: [
     'app/**/*',
     'node_modules/**/*',
@@ -31,8 +31,11 @@ const config = {
       filter: [
         '**/*',
         '!.git',
+        // utf-8-validate and stuff have a this thing that just breaks code signing
+        '!**/python3',
         // do not copy inside itself
         '!electron-build',
+        '!src',
         // in dev, these can be symlinks that break codesign check
         '!node_modules/.bin',
         '!node_modules/@soundworks/electron',

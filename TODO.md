@@ -82,7 +82,7 @@
     + @todo: define
 
 
-- codesign --verify --deep --strict --verbose=2 /Users/matuszewski/work/dev/projects/como/como-vox/electron-build/mac/CoMo-Vox.app
+- codesign --verify --deep --strict --verbose=2 /path/to/como-vox/electron-build/mac/CoMo-Vox.app
 
     + not the electron version
     + test default output dir // "output": path.join(swAppPath, 'electron-build')

@@ -21,7 +21,8 @@ module.exports = async function (params) {
     return;
   }
 
-  console.log('afterSign hook triggered', params);
+  // console.log('afterSign hook triggered', params);
+  console.log('> afterSign hook triggered');
 
   // Same appId in electron-builder.
   let appId = electronConfig.appId;
@@ -32,7 +33,7 @@ module.exports = async function (params) {
     throw new Error(`Cannot find application at: ${appPath}`);
   }
 
-  console.log(`Notarizing ${appId} found at ${appPath}`);
+  console.log(`> Notarizing ${appId} in ${appPath}`);
 
   try {
     const config = {

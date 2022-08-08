@@ -19,7 +19,7 @@ if (['init', 'dev', 'build'].indexOf(cmd) === -1) {
 
   if (cmd === 'init') {
     //
-    const defaultElectronFile = `\
+    const configModel = `\
 const pkg = require('./package.json');
 
 const config = {
@@ -28,7 +28,7 @@ const config = {
   buildVersion: pkg.version,
   appId: 'fr.ircam.ismm.my-app',
   icon: './media/icon.png',
-  // to be fixed confirmed...
+  // auto-update config
   publish: {
     provider: 'github',
     owner: 'ircam-ismm',
@@ -40,13 +40,76 @@ const config = {
     'resources',
     // ...
   ]
-  // @todos
-  // icons, etc.
 }
 
 module.exports = config;
     `
-    console.log(chalk.yellow('> `soundworks-electron init` not yet implemented, check the README'));
+
+    const electronConfigFilepath = path.join(swAppPath, '.electron.js');
+
+    if (!fs.existsSync(electronConfigFilepath)) {
+      fs.writeFileSync(electronConfigFilepath, configModel);
+      console.log(chalk.cyan(`> File "${electronConfigFilepath}"successfully written`));
+    }
+
+
+    // env file
+    const electronEnvConfig = `\
+{
+  type: 'electron',
+  port: 8000,
+  assetsDomain: '',
+  websockets: {
+    path: 'socket',
+    url: '',
+    pingInterval: 5000
+  },
+  useHttps: false,
+  httpsInfos: {
+    key: null,
+    cert: null,
+  },
+}
+    `
+
+    const electronEnvFilepath = path.join(swAppPath, 'config', 'env', 'electron.json');
+
+    if (!fs.existsSync(electronEnvFilepath)) {
+      fs.writeFileSync(electronEnvFilepath, electronEnvConfig);
+      console.log(chalk.cyan(`> Env File "${electronEnvFilepath}" successfully written`));
+    }
+
+    // add `electron-build to .gitignore`
+    const gitignorePath = path.join(swAppPath, '.gitignore');
+    fs.appendFileSync(gitignorePath, `
+# @soundworks/electron
+electron-build
+`);
+    console.log(chalk.cyan(`> Added electron-build to .gitignore`));
+
+
+    const packagePath = path.join(swAppPath, 'package.json');
+    const pkg = JSON.parse(fs.readFileSync(packagePath));
+
+    if (!pkg.scripts['watch-build']) {
+      // @todo - review, this does not really work...
+      pkg.scripts['watch-build'] = "concurrently -p \"soundworks-template-build -b -w\" \"npm run watch-sass\""
+      fs.writeFileSync(packagePath, JSON.stringify(pkg, null, 2));
+
+      console.log(chalk.cyan(`> Added "watch-build" script to package.json`));
+    }
+
+    console.log(`Make sure to add the following lines in "src/server/index.js":
+\`\`\`
+if (process.env.ENV === 'electron') {
+  process.send(JSON.stringify({
+    type: 'soundworks:ready',
+    payload: {},
+  }));
+}
+\`\`\`
+`);
+
     return;
   }
 
@@ -242,7 +305,11 @@ module.exports = config;
       });
     }
 
-    electronBuild();
+    try {
+      electronBuild();
+    } catch(err) {
+      console.log(err);
+    }
     // --------------------------------------------------------
   }
 
