@@ -13,6 +13,7 @@ const config = {
   extraMetadata: {
     version: electronConfig.buildVersion,
     name: electronConfig.name,
+    author: electronConfig.author,
   },
   productName: electronConfig.productName,
   buildVersion: electronConfig.buildVersion,
