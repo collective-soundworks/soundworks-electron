@@ -8,7 +8,7 @@
 npm install --save-dev @soundworks/electron
 ```
 
-create an `.electron.js` file at the root of your application with the following informations:
+create an `.electron.cjs` file at the root of your application with the following informations:
 
 ```js
 const pkg = require('./package.json');
@@ -43,19 +43,7 @@ module.exports = config;
 Make sure you have the following script in your `package.json`, this command is used by `@soundworks/electron` to watch and build the soundworks project in dev mode.
 
 ```json
-"watch-build": "soundworks-template-build -b -w",
-```
-
-The wrapped application server should send an event to the electron process when ready,
-so that the GUI can be launched safely.
-
-```js
-if (process.env.ENV === 'electron') {
-  process.send(JSON.stringify({
-    type: 'soundworks:ready',
-    payload: {},
-  }));
-}
+"watch-build": "soundworks-build -b -w",
 ```
 
 ## Commands

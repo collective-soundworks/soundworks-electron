@@ -50,7 +50,7 @@ const config = {
 module.exports = config;
     `
 
-    const electronConfigFilepath = path.join(swAppPath, '.electron.js');
+    const electronConfigFilepath = path.join(swAppPath, '.electron.cjs');
 
     if (!fs.existsSync(electronConfigFilepath)) {
       fs.writeFileSync(electronConfigFilepath, configModel);
@@ -120,10 +120,10 @@ if (process.env.ENV === 'electron') {
 
   // --------------------------------------------------------
   // CHECK THAT ELECTRON FILE EXISTS IN TARGET APP
-  const electronFile = path.join(swAppPath, '.electron.js');
+  const electronFile = path.join(swAppPath, '.electron.cjs');
 
   if (!fs.existsSync(electronFile)) {
-    console.log(chalk.yellow('> ".electron.js" file was not found.'));
+    console.log(chalk.yellow('> ".electron.cjs" file was not found.'));
     console.log(chalk.yellow('> Please run `soundworks-electron init` first'));
     return;
   }
@@ -191,7 +191,7 @@ if (process.env.ENV === 'electron') {
 
   // --------------------------------------------------------
   // GRAB ELECTRON INFOS IN TARGET APP
-  const electronConfigPathAbs = path.join(swAppPath, '.electron.js');
+  const electronConfigPathAbs = path.join(swAppPath, '.electron.cjs');
   const electronConfigPathRel = path.relative(__dirname, electronConfigPathAbs);
   const electronConfig = require(electronConfigPathRel);
 

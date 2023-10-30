@@ -82,10 +82,9 @@ app.on('ready', async () => {
     cwd: soundworksAppPath
   });
 
-  soundworksApp.on('message', data => {
-    const msg = JSON.parse(data);
+  soundworksApp.on('message', msg => {
     // the server is running
-    if (msg.type === 'soundworks:ready') {
+    if (msg === 'soundworks:server:started') {
       setApplicationMenu();
 
       const mainWindow = createWindow('main', {
